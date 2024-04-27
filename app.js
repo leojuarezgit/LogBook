@@ -23,10 +23,10 @@ const PORT = 3000;
 // Middleware para validar los datos del paciente
 const validatePatientData = (req, res, next) => {
   const {
-    name,
-    lastname,
-    healthCareSys,
-    healtCareSysNumber,
+    Name,
+    Lastname,
+    HealthCareSys,
+    HealtCareSysNumber,
     IdCardNr,
     Telephone,
     Address,
@@ -34,10 +34,10 @@ const validatePatientData = (req, res, next) => {
     Province,
   } = req.body;
   if (
-    !name ||
-    !lastname ||
-    !healthCareSys ||
-    !healtCareSysNumber ||
+    !Name ||
+    !Lastname ||
+    !HealthCareSys ||
+    !HealtCareSysNumber ||
     !Telephone ||
     !Address ||
     !Locality ||
@@ -52,14 +52,15 @@ const validatePatientData = (req, res, next) => {
   next();
 };
 
+
 // Controlador de ruta para crear un nuevo paciente
-app.post("/patient", validatePatientData, async (req, res) => {
+app.post("/CreatePatient", validatePatientData, async (req, res) => {
   try {
     const {
-      name,
-      lastname,
-      healthCareSys,
-      healtCareSysNumber,
+      Name,
+      Lastname,
+      HealthCareSys,
+      HealtCareSysNumber,
       IdCardNr,
       Telephone,
       Address,
@@ -67,13 +68,16 @@ app.post("/patient", validatePatientData, async (req, res) => {
       Province,
     } = req.body;
 
+    //si IdCardNr no viene indefinida, le asigno a la variable idCardNr el valor de IdCardNr (notar diferencia entre idCardNr e IdCardNr), si viene indefinida asignarle null
+    const idCardNr = typeof IdCardNr !== 'undefined' ? IdCardNr : null;
+    
     // Guardar los datos del paciente en Firestore
-    const pacienteRef = await db.collection("pacientes").add({
-      name,
-      lastname,
-      healthCareSys,
-      healtCareSysNumber,
-      IdCardNr,
+    const pacienteRef = await db.collection("Patients").add({
+      Name,
+      Lastname,
+      HealthCareSys,
+      HealtCareSysNumber,
+      IdCardNr: idCardNr,
       Telephone,
       Address,
       Locality,
@@ -86,10 +90,10 @@ app.post("/patient", validatePatientData, async (req, res) => {
       message: "Paciente creado exitosamente",
       data: {
         id: pacienteRef.id,
-        name,
-        lastname,
-        healthCareSys,
-        healtCareSysNumber,
+        Name,
+        Lastname,
+        HealthCareSys,
+        HealtCareSysNumber,
         IdCardNr,
         Telephone,
         Address,
