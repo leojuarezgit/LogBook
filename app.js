@@ -4,6 +4,7 @@ const app = express();
 
 /*-----------------------Firebase/Firestore--------------------- */
 const firebaseAdmin = require("firebase-admin");
+const functions = require("firebase-functions")
 const serviceAccount = require("./credentials/firebase/subiza-logbook-firebase-adminsdk-6i5c3-e59b4f3da4.json");
 // Inicializar Firebase Admin SDK
 firebaseAdmin.initializeApp({
@@ -115,3 +116,8 @@ app.post("/CreatePatient", validatePatientData, async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor Express corriendo en el puerto ${PORT}`);
 });
+
+
+
+
+exports.app = functions.https.onRequest(app);
